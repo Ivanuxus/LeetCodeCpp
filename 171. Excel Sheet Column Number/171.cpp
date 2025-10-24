@@ -8,12 +8,9 @@ class Solution
 public:
 	void fillToSizeOfResulted(vector<int> &result, string &Resulted)
 	{
-		if (Resulted.size() - result.size() > 2)
+		while (Resulted.size() != result.size())
 		{
-			while (Resulted.size() != result.size())
-			{
-				result.push_back(1);
-			}
+			result.push_back(1);
 		}
 	}
 	string convertionFromVectorOfNumsToString(vector<int> &result, char *Alphabet)
@@ -59,7 +56,7 @@ public:
 		}
 		while (i < result.size() - 1)
 		{
-			if (result[i] > 0)
+			if (result[i] > 0 && i != result.size())
 			{
 				result[i + 1] += 26;
 				result[i] -= 1;
@@ -85,25 +82,11 @@ public:
 		vector<int> result = {};
 		int sum = 0;
 		char Alphabet[27] = {' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
-		if (columnTitle.size() == 1)
-		{
-			for (int k = 0; k < 27; k++)
-			{
-				if (Alphabet[k] == columnTitle[0])
-				{
-					return k;
-				}
-			}
-		}
-		else
-		{
-			fillToSizeOfResulted(result, columnTitle);
-			int i = result.size() - 1;
-			makeTheSameNumber(result, columnTitle, Alphabet);
-			string a = convertionFromVectorOfNumsToString(result, Alphabet);
-			sum = countNumOfRow(result, columnTitle, Alphabet);
-			return sum;
-		}
+		fillToSizeOfResulted(result, columnTitle);
+		int i = result.size() - 1;
+		makeTheSameNumber(result, columnTitle, Alphabet);
+		string a = convertionFromVectorOfNumsToString(result, Alphabet);
+		sum = countNumOfRow(result, columnTitle, Alphabet);
 		return sum;
 	}
 };
