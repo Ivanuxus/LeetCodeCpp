@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <sstream>
 using namespace std;
 
 class Solution
@@ -9,11 +8,11 @@ class Solution
 public:
 	int reverseBits(int n)
 	{
+		unsigned long long grade = 1;
 		vector<int> binary = {};
 		vector<int>::iterator it = binary.begin();
 		int counter = 0;
 		int resint = 0;
-		stringstream ss;
 		while (n != 0)
 		{
 			binary.insert(it, (n % 2));
@@ -21,18 +20,23 @@ public:
 			it = binary.begin() + counter;
 			n /= 2;
 		}
-		string res;
-		for (int i = binary.size() - 1; i > 0; i--)
+		while (counter != 32)
 		{
-			res += binary[i];
+			binary.push_back(0);
+			counter++;
 		}
-		ss << res;
-		ss >> resint;
-		return resint;
+
+		int res = 0;
+		for (int i = 31; i >= 0; i--)
+		{
+			res += binary[i] * grade;
+			grade *= 2;
+		}
+		return res;
 	}
 };
 int main()
 {
 	Solution S;
-	cout << S.reverseBits(228);
+	cout << S.reverseBits(43261596);
 }
