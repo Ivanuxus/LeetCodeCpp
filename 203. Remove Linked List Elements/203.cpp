@@ -19,8 +19,12 @@ public:
         ListNode *current = head;
         ListNode *resulted = new ListNode();
         ListNode *resultedHead = resulted;
-        while (current->next != nullptr)
+        while (true)
         {
+            if (current->val == 0)
+            {
+                break;
+            }
             if (current->val != val)
             {
                 resulted->val = current->val;
@@ -33,27 +37,38 @@ public:
                     resulted = resulted->next;
                 }
             }
-            current = current->next;
             if (current->next == nullptr)
             {
-                ListNode *currentx = resultedHead;
-                while (currentx->next != nullptr)
-                {
-                    if ((currentx->next)->val == 0)
-                    {
-                        currentx->next = nullptr;
-                        continue;
-                    }
-                    currentx = currentx->next;
-                }
-                if (resultedHead->val == 0)
-                {
-                    resultedHead = nullptr;
-                }
-                return resultedHead;
+                break;
             }
+            current = current->next;
         }
-        return nullptr;
+        if (current->next == nullptr)
+        {
+            ListNode *currentx = resultedHead;
+            while (currentx->next != nullptr)
+            {
+                if ((currentx->next)->val == 0)
+                {
+                    currentx->next = nullptr;
+                    continue;
+                }
+                currentx = currentx->next;
+            }
+            if (resultedHead->val == 0)
+            {
+                resultedHead = nullptr;
+            }
+            return resultedHead;
+        }
+        if (current->val != val)
+        {
+            return resultedHead;
+        }
+        else
+        {
+            return nullptr;
+        }
     }
     void printLinkedList(ListNode *head)
     {
@@ -90,6 +105,16 @@ public:
         {
             head = nullptr;
         }
+        ListNode *currentx = head;
+        while (currentx->next != nullptr)
+        {
+            if ((currentx->next)->val == 0)
+            {
+                currentx->next = nullptr;
+                continue;
+            }
+            currentx = currentx->next;
+        }
         printLinkedList(head);
         printf("\n");
         ListNode *newHead = removeElements(head, val);
@@ -100,7 +125,7 @@ public:
 int main()
 {
     Solution s;
-    int inp[] = {1};
+    int inp[] = {1, 1};
     int val = 2;
     s.InitLinkedList(inp, val, (sizeof(inp) / sizeof(inp[0])));
     return 0;
