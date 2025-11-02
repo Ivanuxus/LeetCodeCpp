@@ -1,0 +1,1 @@
+select t1.id from weather t1 left join weather t2 on (t1.recorddate-t2.recorddate)=1 where (t1.temperature-t2.temperature)>0;
