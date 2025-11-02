@@ -26,7 +26,7 @@ public:
                 resulted->val = current->val;
                 if (current->next != nullptr)
                 {
-                    if (current != nullptr && ((current->next)->val != 6 && (current->next)->next != nullptr))
+                    if (current != nullptr)
                     {
                         resulted->next = new ListNode();
                     }
@@ -36,41 +36,25 @@ public:
             current = current->next;
             if (current->next == nullptr)
             {
-                printLinkedList(resultedHead);
+                ListNode *currentx = resultedHead;
+                while (currentx->next != nullptr)
+                {
+                    if ((currentx->next)->val == 0)
+                    {
+                        currentx->next = nullptr;
+                        continue;
+                    }
+                    currentx = currentx->next;
+                }
+                if (resultedHead->val == 0)
+                {
+                    resultedHead = nullptr;
+                }
                 return resultedHead;
             }
         }
         return nullptr;
     }
-    // ListNode *removeElements(ListNode *head, int val)
-    // {
-    //     if (head == nullptr)
-    //     {
-    //         return nullptr;
-    //     }
-    //     ListNode *current = head;
-    //     ListNode *buffer = nullptr;
-    //     while (current->next != nullptr)
-    //     {
-
-    //         if (current->val == val)
-    //         {
-    //             ListNode *bufferForNext = current->next;
-    //             current = buffer;
-    //             current->next = bufferForNext;
-    //         }
-    //         if (((current->next)->next) != nullptr)
-    //         {
-    //             if (((current->next)->next)->val == val)
-    //             {
-    //                 buffer = current->next;
-    //             }
-    //         }
-    //         current = current->next;
-    //     }
-    //     printLinkedList(head);
-    //     return head;
-    // }
     void printLinkedList(ListNode *head)
     {
         if (head == nullptr)
@@ -79,9 +63,13 @@ public:
         }
         printf("\n");
         ListNode *current = head;
-        while (current->next != nullptr)
+        while (true)
         {
             printf("%d ", current->val);
+            if (current->next == nullptr)
+            {
+                break;
+            }
             current = current->next;
         }
     }
@@ -104,15 +92,16 @@ public:
         }
         printLinkedList(head);
         printf("\n");
-        *removeElements(head, val);
+        ListNode *newHead = removeElements(head, val);
+        printLinkedList(newHead);
         return head;
     }
 };
 int main()
 {
     Solution s;
-    int inp[] = {1, 2, 6, 3, 4, 5, 6};
-    int val = 6;
+    int inp[] = {1};
+    int val = 2;
     s.InitLinkedList(inp, val, (sizeof(inp) / sizeof(inp[0])));
     return 0;
 }
