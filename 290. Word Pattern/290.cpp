@@ -4,55 +4,87 @@
 #include <map>
 class Solution
 {
-    std::map<std::string, std::string> function{{"CPU", "d"}, {"GPU", "asd"}, {"RAM", "asd"}};
+    std::map<std::string, std::string> function{};
 
 public:
-    bool isInMap(std::string elem)
+    bool isInMapValues(std::string elem)
     {
         for (auto it = function.begin(); it != function.end(); ++it)
         {
-            if (elem == it->first || elem == it->second)
+            if (elem == it->second)
             {
                 return true;
             }
         }
         return false;
     }
-    void displaceToVector(std::vector<std::string> &result, std::string s)
-    {
-        std::string concat = "";
-        std::string::iterator it = s.begin();
-        while (it != s.end())
-        {
-            bool subFound = false;
-            while (*it != ' ')
-            {
-                concat += *it;
-            }
-
-            result.push_back(concat);
-            concat = "";
-        }
-    }
-    bool isInMap(char ch)
+    bool isInMapKeys(char ch)
     {
         std::string elem = "";
         elem.push_back(ch);
         for (auto it = function.begin(); it != function.end(); ++it)
         {
-            if (elem == it->first || elem == it->second)
+            if (elem == it->first)
             {
                 return true;
             }
         }
         return false;
     }
+    std::vector<std::string> splitToVector(std::string s)
+    {
+        std::vector<std::string> result = {};
+        std::cout << std::endl;
+        std::string concat = "";
+        int i = 0;
+        while (i < s.size())
+        {
+            bool subFound = false;
+            while (s[i] != ' ' && i != s.size())
+            {
+                subFound = true;
+                concat += s[i];
+                i++;
+            }
+            if (subFound)
+            {
+                result.push_back(concat);
+                subFound = false;
+                concat = "";
+            }
+            i++;
+        }
+        return result;
+    }
     bool wordPattern(std::string pattern, std::string s)
     {
-        for (int i = 0; i < pattern.size(); ++i)
+        std::vector<std::string> splittedString = splitToVector(s);
+        for (int i = 0; i < splittedString.size(); ++i)
         {
-            if (!isInMap(pattern[i]))
+            if (!isInMapKeys(pattern[i]) && isInMapValues(splittedString[i]))
             {
+                return false;
+            }
+            else if (isInMapValues(splittedString[i]) && isInMapKeys(pattern[i]))
+            {
+                std::string tempS(1, pattern[i]);
+                if (function[tempS] == splittedString[i])
+                {
+                    continue;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (!isInMapValues(splittedString[i]) && isInMapKeys(pattern[i]))
+            {
+                return false;
+            }
+            else if (!isInMapValues(splittedString[i]) && !isInMapKeys(pattern[i]))
+            {
+                std::string tempS(1, pattern[i]);
+                function[tempS] = splittedString[i];
             }
         }
         return true;
@@ -60,9 +92,9 @@ public:
 };
 int main()
 {
-    std::vector<std::string> Displaced = {};
-    std::string s = "BS as sdnj";
+    std::string pattern = "abc";
+    std::string s = "b c a";
     Solution S;
-    S.displaceToVector(Displaced, s);
+    std::cout << S.wordPattern(pattern, s);
     return 0;
 }
